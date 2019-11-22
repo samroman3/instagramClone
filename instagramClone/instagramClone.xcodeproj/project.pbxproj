@@ -27,9 +27,10 @@
 		3A3774D8238850E50034EA59 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774D7238850E50034EA59 /* LoginViewController.swift */; };
 		3A3774DA238850F00034EA59 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774D9238850F00034EA59 /* SignUpViewController.swift */; };
 		3A3774DD238851690034EA59 /* String + Validations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774DC238851690034EA59 /* String + Validations.swift */; };
-		3A3774E1238852110034EA59 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774E0238852110034EA59 /* MainTabBarController.swift */; };
+		3A3774E1238852110034EA59 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774E0238852110034EA59 /* MainTabBarViewController.swift */; };
 		3A3774E4238852FE0034EA59 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774E3238852FE0034EA59 /* ProfileViewController.swift */; };
 		3A3774E62388531D0034EA59 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774E52388531D0034EA59 /* FeedViewController.swift */; };
+		3A3774E8238853B70034EA59 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774E7238853B70034EA59 /* UploadViewController.swift */; };
 		E47ABBC3BE4215E27EE18ED2 /* Pods_instagramCloneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 387AE922004F608AE61B6ABA /* Pods_instagramCloneTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -80,9 +81,10 @@
 		3A3774D7238850E50034EA59 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3A3774D9238850F00034EA59 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3A3774DC238851690034EA59 /* String + Validations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Validations.swift"; sourceTree = "<group>"; };
-		3A3774E0238852110034EA59 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		3A3774E0238852110034EA59 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		3A3774E3238852FE0034EA59 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		3A3774E52388531D0034EA59 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		3A3774E7238853B70034EA59 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		3F99C333C61C307A66C98CD5 /* Pods_instagramClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_instagramClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		431CA726C9F2DE8F0562CD3C /* Pods-instagramClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instagramClone.release.xcconfig"; path = "Target Support Files/Pods-instagramClone/Pods-instagramClone.release.xcconfig"; sourceTree = "<group>"; };
 		46D7845BB4947603DA5F1414 /* Pods-instagramClone-instagramCloneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instagramClone-instagramCloneUITests.release.xcconfig"; path = "Target Support Files/Pods-instagramClone-instagramCloneUITests/Pods-instagramClone-instagramCloneUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -208,7 +210,7 @@
 		3A3774D52388505E0034EA59 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				3A3774E0238852110034EA59 /* MainTabBarController.swift */,
+				3A3774E0238852110034EA59 /* MainTabBarViewController.swift */,
 				3A3774D6238850700034EA59 /* Authentication */,
 				3A3774E2238852D50034EA59 /* User */,
 			);
@@ -246,6 +248,7 @@
 			children = (
 				3A3774E3238852FE0034EA59 /* ProfileViewController.swift */,
 				3A3774E52388531D0034EA59 /* FeedViewController.swift */,
+				3A3774E7238853B70034EA59 /* UploadViewController.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -512,7 +515,8 @@
 				3A3774DD238851690034EA59 /* String + Validations.swift in Sources */,
 				3A3774E62388531D0034EA59 /* FeedViewController.swift in Sources */,
 				3A3774912385EB260034EA59 /* ViewController.swift in Sources */,
-				3A3774E1238852110034EA59 /* MainTabBarController.swift in Sources */,
+				3A3774E8238853B70034EA59 /* UploadViewController.swift in Sources */,
+				3A3774E1238852110034EA59 /* MainTabBarViewController.swift in Sources */,
 				3A37748D2385EB260034EA59 /* AppDelegate.swift in Sources */,
 				3A3774D423884F7B0034EA59 /* Post.swift in Sources */,
 				3A3774CB23884E880034EA59 /* FirebaseStorageService.swift in Sources */,
