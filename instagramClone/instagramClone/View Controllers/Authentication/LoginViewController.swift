@@ -142,7 +142,7 @@ class LoginViewController: UIViewController {
     }
 
     //MARK: Firebase Authentication Methods
-    private func handleLoginResponse(with result: Result<User, Error>) {
+    private func handleLoginResponse(with result: Result<(), Error>) {
         switch result {
         case .failure(let error):
             print(error)
