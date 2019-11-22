@@ -81,94 +81,100 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var createAccountButton: UIButton = {
-           let button = UIButton(type: .system)
-           let attributedTitle = NSMutableAttributedString(string: "Dont have an account?  ",
-                                                           attributes: [
-                                                               NSAttributedString.Key.font: UIFont(name: "Verdana", size: 14)!,
-                                                               NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-           attributedTitle.append(NSAttributedString(string: "Sign Up",
-                                                     attributes: [NSAttributedString.Key.font: UIFont(name: "Verdana-Bold", size: 14)!,
-                                                                  NSAttributedString.Key.foregroundColor: UIColor.cyan ]))
-           button.setAttributedTitle(attributedTitle, for: .normal)
-           button.addTarget(self, action: #selector(showSignUp), for: .touchUpInside)
-           return button
-       }()
+        let button = UIButton(type: .system)
+        let attributedTitle = NSMutableAttributedString(string: "Dont have an account?  ",
+                                                        attributes: [
+                                                            NSAttributedString.Key.font: UIFont(name: "Verdana", size: 14)!,
+                                                            NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        attributedTitle.append(NSAttributedString(string: "Sign Up",
+                                                  attributes: [NSAttributedString.Key.font: UIFont(name: "Verdana-Bold", size: 14)!,
+                                                               NSAttributedString.Key.foregroundColor: UIColor.cyan ]))
+        button.setAttributedTitle(attributedTitle, for: .normal)
+        button.addTarget(self, action: #selector(showSignUp), for: .touchUpInside)
+        return button
+    }()
     
     
     
     
     
     
-
+    
     override func viewDidLoad() {
         view.backgroundColor = .white
         setUpConstraints()
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
     
     //MARK: Private Methods
     private func clearAllFields(){
-           emailTextField.text = ""
-           passwordTextField.text = ""
-       }
-       
+        emailTextField.text = ""
+        passwordTextField.text = ""
+    }
+    
+    private func showAlert(with title: String, and message: String) {
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alertVC, animated: true, completion: nil)
+    }
     
     //MARK: OBJ-C Methods
     
     @objc func validateFields() {
-           guard emailTextField.hasText, passwordTextField.hasText else {
-               loginButton.isEnabled = false
-               return
-           }
-           loginButton.isEnabled = true
-           emailIcon.tintColor = .cyan
+        guard emailTextField.hasText, passwordTextField.hasText else {
+            loginButton.isEnabled = false
+            return
+        }
+        loginButton.isEnabled = true
+        emailIcon.tintColor = .cyan
         passwordIcon.tintColor = .cyan
-       }
+    }
+    
     
     @objc func tryLogin() {
-       
+        
         guard let email = emailTextField.text, let password = passwordTextField.text else {
-             clearAllFields()
-//           self.showFloatCellAlert(with: .topFloat, title: "oops!", description: "Please fill out all fields.", image: nil)
+            clearAllFields()
+            showAlert(with: "Error", and: "Please fill out all fields.")
             return
         }
         
         guard email.isValidEmail else {
             clearAllFields()
-//                self.showFloatCellAlert(with: .topFloat, title: "oops!", description: "Please enter a valid email", image: nil)
-
+            showAlert(with: "Error", and: "Please enter a valid email")
+            
             return
         }
         
         guard password.isValidPassword else {
             clearAllFields()
-//                self.showFloatCellAlert(with: .topFloat, title: "oops!", description: "Please enter a valid password. Passwords must have at least 8 characters.", image: nil)
-
+            showAlert(with: "Error", and: "Please enter a valid password. Passwords must have at least 8 characters.")
+            
             return
         }
         FirebaseAuthService.manager.loginUser(email: email.lowercased(), password: password) { (result) in
             self.handleLoginResponse(with: result)
         }
     }
-
+    
     //MARK: Firebase Authentication Methods
     private func handleLoginResponse(with result: Result<(), Error>) {
         switch result {
         case .failure(let error):
             print(error)
-//                self.showAlert(with: "Error", and: "Could not log in. Error: \(error)")
-//
+            //                self.showAlert(with: "Error", and: "Could not log in. Error: \(error)")
+        //
         case .success:
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-        let sceneDelegate = windowScene.delegate as? SceneDelegate
-        else { return }
-        print("login successful")
-        sceneDelegate.window?.rootViewController = MainTabBarViewController()
-
-            }
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                let sceneDelegate = windowScene.delegate as? SceneDelegate
+                else { return }
+            print("login successful")
+            sceneDelegate.window?.rootViewController = MainTabBarViewController()
+            
         }
+    }
     
     @objc func showSignUp() {
         let signupVC = SignUpViewController()
@@ -190,11 +196,11 @@ class LoginViewController: UIViewController {
     }
     
     private func setupLogoLabel() {
-           view.addSubview(logoLabel)
-           
-           logoLabel.translatesAutoresizingMaskIntoConstraints = false
-           NSLayoutConstraint.activate([logoLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60), logoLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16), logoLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16)])
-       }
+        view.addSubview(logoLabel)
+        
+        logoLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([logoLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60), logoLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16), logoLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16)])
+    }
     private func setupLoginStackView() {
         let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField])
         stackView.axis = .vertical
@@ -250,5 +256,5 @@ class LoginViewController: UIViewController {
             createAccountButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             createAccountButton.heightAnchor.constraint(equalToConstant: 50)])
     }
-
+    
 }
