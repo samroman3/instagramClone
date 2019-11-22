@@ -21,6 +21,17 @@ class SignUpViewController: UIViewController {
     }
     
     //MARK: UI TextFields
+    
+    lazy var logoLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Trebuchet MS", size: 100)
+        let attributedTitle = NSMutableAttributedString(string: "new account", attributes: [NSAttributedString.Key.font: UIFont(name: "Billabong", size: 80)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        label.attributedText = attributedTitle
+        label.backgroundColor = .clear
+        label.textAlignment = .center
+        return label
+    }()
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = " Enter Email..."
@@ -138,11 +149,18 @@ class SignUpViewController: UIViewController {
         setupHaveAccountButton()
         setupEmailIcon()
         setupPasswordIcon()
-//        setupUserNameIcon()
         setUpSignUpButton()
         setupHaveAccountButton()
+        setupLogoLabel()
         
     }
+    
+    private func setupLogoLabel() {
+              view.addSubview(logoLabel)
+              
+              logoLabel.translatesAutoresizingMaskIntoConstraints = false
+              NSLayoutConstraint.activate([logoLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60), logoLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16), logoLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16)])
+          }
     
      private func setupLoginStackView() {
            let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField])
