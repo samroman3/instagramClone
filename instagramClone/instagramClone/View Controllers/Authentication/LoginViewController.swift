@@ -68,6 +68,22 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    lazy var createAccountButton: UIButton = {
+           let button = UIButton(type: .system)
+           let attributedTitle = NSMutableAttributedString(string: "Dont have an account?  ",
+                                                           attributes: [
+                                                               NSAttributedString.Key.font: UIFont(name: "Verdana", size: 14)!,
+                                                               NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+           attributedTitle.append(NSAttributedString(string: "Sign Up",
+                                                     attributes: [NSAttributedString.Key.font: UIFont(name: "Verdana-Bold", size: 14)!,
+                                                                  NSAttributedString.Key.foregroundColor: UIColor.cyan ]))
+           button.setAttributedTitle(attributedTitle, for: .normal)
+           button.addTarget(self, action: #selector(showSignUp), for: .touchUpInside)
+           return button
+       }()
+    
+    
+    
     
     
     
@@ -95,8 +111,8 @@ class LoginViewController: UIViewController {
                return
            }
            loginButton.isEnabled = true
-           emailIcon.tintColor = .systemPurple
-           passwordIcon.tintColor = .systemPurple
+           emailIcon.tintColor = .cyan
+        passwordIcon.tintColor = .cyan
        }
     
     @objc func tryLogin() {
@@ -142,6 +158,12 @@ class LoginViewController: UIViewController {
             }
         }
     
+    @objc func showSignUp() {
+        let signupVC = SignUpViewController()
+        signupVC.modalPresentationStyle = .currentContext
+        present(signupVC, animated: true, completion: nil)
+    }
+    
     
     
     //MARK: UI Setup
@@ -151,6 +173,7 @@ class LoginViewController: UIViewController {
         setupEmailIcon()
         setupPasswordIcon()
         setUpLoginButton()
+        setupCreateAccountButton()
     }
     private func setupLoginStackView() {
         let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField])
@@ -195,6 +218,17 @@ class LoginViewController: UIViewController {
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor)])
         view.layoutIfNeeded()
         
+    }
+    
+    private func setupCreateAccountButton() {
+        view.addSubview(createAccountButton)
+        
+        createAccountButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            createAccountButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            createAccountButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            createAccountButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            createAccountButton.heightAnchor.constraint(equalToConstant: 50)])
     }
 
 }
