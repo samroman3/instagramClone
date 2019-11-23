@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.systemGray6
+        view.backgroundColor = UIColor.init(white: 0.1, alpha: 1)
         postCollectionView.delegate = self
         postCollectionView.dataSource = self
         setUpView()
@@ -28,22 +28,66 @@ class ProfileViewController: UIViewController {
         profileImage.layer.borderWidth = 3.0
         profileImage.layer.borderColor = UIColor.white.cgColor
     }
-  
     
+    var image = UIImage() {
+        didSet {
+            self.profileImage.image = image
+        }
+    }
+    var imageURL: String? = nil
+    var postCount = 0 {
+        didSet {
+            totalPost.text = "\(postCount) \n Posts"
+        }
+    }
+    
+    //MARK: Private Methods
+    private func setUserName() {
+           if let displayName = FirebaseAuthService.manager.currentUser?.displayName {
+               userName.text = displayName
+           }
+       }
+       private func setProfileImage() {
+           if let pictureUrl = FirebaseAuthService.manager.currentUser?.photoURL {
+               FirebaseStorageService.profileManager.getUserImage(photoUrl: pictureUrl) { (result) in
+                   switch result {
+                   case .failure(let error):
+                       print(error)
+                   case .success(let image):
+                       self.profileImage.image = image
+                   }
+               }
+           }
+       }
+    
+       private func getPostCount() {
+           if let userUID = FirebaseAuthService.manager.currentUser?.uid {
+           DispatchQueue.global(qos: .default).async {
+               FirestoreService.manager.getPosts(forUserID: userUID) { (result) in
+                   switch result {
+                   case .failure(let error):
+                       print(error)
+                   case .success(let posts):
+                       self.postCount = posts.count
+                   }
+               }
+           }
+           }
+       }
+  
+    //MARK: UI Elements
     lazy var profileImage: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .lightGray
         image.image = UIImage(systemName: "person")
         image.tintColor = .white
-//        image.image = UIImage(contentsOfFile: (user?.photoURL!)!) ?? UIImage(systemName: "person")
-        
         return image
     }()
     lazy var userName: UILabel = {
         let label = UILabel()
-//        label.text = user.userName ?? "User not found"
         label.textAlignment = .left
-        label.textColor = .black
+        label.textColor = .white
+        label.backgroundColor = .clear
         return label
     }()
     lazy var totalPost: UILabel = {
@@ -51,6 +95,7 @@ class ProfileViewController: UIViewController {
         label.text = "0 \n Posts"
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .white
         return label
     }()
     
@@ -59,6 +104,8 @@ class ProfileViewController: UIViewController {
         label.text = "0 \n Followers"
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .white
+
         return label
     }()
     
@@ -67,6 +114,8 @@ class ProfileViewController: UIViewController {
         label.text = "0 \n Following"
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .white
+
         return label
     }()
     
@@ -74,7 +123,7 @@ class ProfileViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Edit Profile", for: .normal)
         button.tintColor = .orange
-        button.backgroundColor = .lightGray
+        button.backgroundColor = .init(white: 0.4, alpha: 0.8)
         button.addTarget(self, action: #selector(editAction), for: .touchUpInside)
         return button
     }()
@@ -84,7 +133,7 @@ class ProfileViewController: UIViewController {
           layout.scrollDirection = .vertical
           let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
           cv.register(PostCell.self, forCellWithReuseIdentifier: "posts")
-          cv.backgroundColor = UIColor.systemGray4
+        cv.backgroundColor = .init(white: 0.2, alpha: 0.9)
           return cv
       }()
     
@@ -93,12 +142,19 @@ class ProfileViewController: UIViewController {
         editVC.modalPresentationStyle = .fullScreen
         present(editVC, animated: true, completion: nil)
     }
+    
+    
+    
+    //MARK: Constraint Methods
+    
     private func setUpView(){
         constrainProfileImage()
         constrainStats()
         constrainUserName()
         constrainEditButton()
         constrainCollectionView()
+        setUserName()
+        setProfileImage()
     }
  
     
@@ -162,13 +218,16 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             postCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
             postCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            postCollectionView.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 60),
+            postCollectionView.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 20),
             postCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
       ])
     }
     
 
 }
+
+    //MARK: CollectionView Extension
+
 extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 40
@@ -176,7 +235,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = postCollectionView.dequeueReusableCell(withReuseIdentifier: "posts", for: indexPath) as? PostCell
-        cell?.backgroundColor = .white
+        cell?.backgroundColor = UIColor.init(white: 0.1, alpha: 1)
         return cell!
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -4,17 +4,33 @@ import Foundation
 import FirebaseStorage
 
 class FirebaseStorageService {
-    static var manager = FirebaseStorageService()
     
     private let storage: Storage!
     private let storageReference: StorageReference
     private let imagesFolderReference: StorageReference
     
-    init() {
+    
+    static var profileManager = FirebaseStorageService(type: .profile)
+    static var uploadManager = FirebaseStorageService(type: .upload)
+    
+    enum TypeOfImage {
+        case profile
+        case upload
+    }
+    
+    init(type: TypeOfImage) {
         storage = Storage.storage()
         storageReference = storage.reference()
-        imagesFolderReference = storageReference.child("images")
+        switch type {
+        case .profile:
+            imagesFolderReference = storageReference.child("profileImages")
+        case .upload:
+            imagesFolderReference = storageReference.child("images")
+        }
+        
     }
+    
+    
     
     func storeImage(image: Data,  completion: @escaping (Result<URL,Error>) -> ()) {
         let metadata = StorageMetadata()
@@ -32,6 +48,16 @@ class FirebaseStorageService {
                     guard let url = url else {completion(.failure(error!));return}
                     completion(.success(url))
                 }
+            }
+        }
+    }
+    
+    func getUserImage(photoUrl: URL, completion: @escaping (Result<UIImage,Error>) -> ()) {
+        imagesFolderReference.storage.reference(forURL: photoUrl.absoluteString).getData(maxSize: 2000000) { (data, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else if let data = data, let image = UIImage(data: data) {
+                completion(.success(image))
             }
         }
     }

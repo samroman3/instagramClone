@@ -8,6 +8,9 @@ class ProfileEditViewController: UIViewController {
 
     //MARK: TODO - set up views using autolayout, not frames
     //MARK: TODO - edit other fields in this VC
+    
+    
+        //MARK: Properties
     var image = UIImage() {
         didSet {
             self.imageView.image = image
@@ -18,8 +21,9 @@ class ProfileEditViewController: UIViewController {
 
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .clear
-        imageView.image = UIImage(systemName: "photo")
+        imageView.backgroundColor = .init(white: 0.2, alpha: 0.9)
+        imageView.image = UIImage(systemName: "person")
+        imageView.tintColor = .white
         return imageView
     }()
 
@@ -28,8 +32,9 @@ class ProfileEditViewController: UIViewController {
         button.setTitle("Add Image", for: .normal)
         button.setTitleColor(.white, for: .normal)
          button.titleLabel?.font = button.titleLabel?.font.withSize(34)
-        button.backgroundColor = .magenta
+        button.backgroundColor = .init(white: 0.2, alpha: 0.9)
         button.addTarget(self, action: #selector(addImagePressed), for: .touchUpInside)
+        button.showsTouchWhenHighlighted = true
         return button
     }()
 
@@ -39,10 +44,11 @@ class ProfileEditViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.textAlignment = .left
         textField.layer.cornerRadius = 15
-        textField.backgroundColor = .init(white: 1.0, alpha: 0.2)
+        textField.backgroundColor = .white
         textField.borderStyle = .roundedRect
         textField.layer.cornerRadius = 5
         textField.autocorrectionType = .no
+        textField.textColor = .black
         return textField
     }()
 
@@ -51,19 +57,30 @@ class ProfileEditViewController: UIViewController {
         button.setTitle("Save Profile", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "System", size: 14)
-        button.backgroundColor = .magenta
+        button.backgroundColor = .init(white: 0.2, alpha: 0.9)
+        button.showsTouchWhenHighlighted = true
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(savePressed), for: .touchUpInside)
         return button
     }()
 
+    //MARK: Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = UIColor.init(white: 0.1, alpha: 1)
         setupViews()
         //MARK: TODO - load in user image and fields when coming from profile page
     }
+    
+    override func viewDidLayoutSubviews() {
+        imageView.layer.cornerRadius = (imageView.frame.size.width) / 2
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 3.0
+        imageView.layer.borderColor = UIColor.white.cgColor
+    }
 
+    
+    //MARK: OBJC Methods
     @objc private func savePressed(){
         guard let userName = userNameTextField.text, let imageURL = imageURL else {
             //MARK: TODO - alert
@@ -115,6 +132,8 @@ class ProfileEditViewController: UIViewController {
         }
     }
 
+    
+    //MARK: Private Methods
     private func showAlert(with title: String, and message: String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -148,6 +167,9 @@ class ProfileEditViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
     }
+    
+    
+    //MARK: Constraint Methods
 
     private func setupViews() {
         setupImageView()
@@ -205,6 +227,8 @@ class ProfileEditViewController: UIViewController {
     }
 }
 
+
+//MARK: ImagePicker Extension
 extension ProfileEditViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else {
@@ -218,7 +242,7 @@ extension ProfileEditViewController: UIImagePickerControllerDelegate, UINavigati
             return
         }
 
-        FirebaseStorageService.manager.storeImage(image: imageData, completion: { [weak self] (result) in
+        FirebaseStorageService.profileManager.storeImage(image: imageData, completion: { [weak self] (result) in
             switch result{
             case .success(let url):
                 //Note - defer UI response, update user image url in auth and in firestore when save is pressed
