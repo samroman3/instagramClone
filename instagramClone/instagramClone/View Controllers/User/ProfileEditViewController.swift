@@ -17,7 +17,7 @@ class ProfileEditViewController: UIViewController {
         }
     }
 
-    var imageURL: URL? = nil
+    var imageURL: String? = nil
 
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -38,17 +38,17 @@ class ProfileEditViewController: UIViewController {
         return button
     }()
 
+   
+    
     lazy var userNameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter User Name"
         textField.autocorrectionType = .no
         textField.textAlignment = .left
         textField.layer.cornerRadius = 15
-        textField.backgroundColor = .white
+        textField.backgroundColor = .init(white: 1.0, alpha: 0.2)
+        textField.textColor = .white
         textField.borderStyle = .roundedRect
-        textField.layer.cornerRadius = 5
-        textField.autocorrectionType = .no
-        textField.textColor = .black
         return textField
     }()
 
@@ -61,6 +61,18 @@ class ProfileEditViewController: UIViewController {
         button.showsTouchWhenHighlighted = true
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(savePressed), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Cancel", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "System", size: 14)
+        button.backgroundColor = .init(white: 0.2, alpha: 0.9)
+        button.layer.cornerRadius = 5
+
+        button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         return button
     }()
 
@@ -86,11 +98,12 @@ class ProfileEditViewController: UIViewController {
             //MARK: TODO - alert
             return
         }
+    
 
-        FirebaseAuthService.manager.updateUserFields(userName: userName, photoURL: imageURL.absoluteString) { (result) in
+        FirebaseAuthService.manager.updateUserFields(userName: userName, photoURL: imageURL) { (result) in
             switch result {
             case .success():
-                FirestoreService.manager.updateCurrentUser(userName: userName, photoURL: imageURL) { [weak self] (nextResult) in
+                FirestoreService.manager.updateCurrentUser(userName: userName, photoURL: URL(string: imageURL)) { [weak self] (nextResult) in
                     switch nextResult {
                     case .success():
                         self?.handleNavigationAwayFromVC()
@@ -109,6 +122,10 @@ class ProfileEditViewController: UIViewController {
                 print(error)
             }
         }
+    }
+    
+    @objc private func cancelButtonPressed(){
+        dismiss(animated: true, completion: nil)
     }
 
     @objc private func addImagePressed() {
@@ -176,6 +193,7 @@ class ProfileEditViewController: UIViewController {
         setupUserNameTextField()
         setupAddImageButton()
         setupSaveButton()
+        setupCancelButton()
     }
 
     private func setupImageView() {
@@ -225,33 +243,45 @@ class ProfileEditViewController: UIViewController {
             saveButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 3)
         ])
     }
+    
+    private func setupCancelButton() {
+        view.addSubview(cancelButton)
+
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            cancelButton.heightAnchor.constraint(equalToConstant: 30),
+            cancelButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 3)
+        ])
+    }
 }
 
 
 //MARK: ImagePicker Extension
 extension ProfileEditViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.editedImage] as? UIImage else {
-            //MARK: TODO - handle couldn't get image :(
-            return
-        }
-        self.image = image
-
-        guard let imageData = image.jpegData(compressionQuality: 1) else {
-            //MARK: TODO - gracefully fail out without interrupting UX
-            return
-        }
-
-        FirebaseStorageService.profileManager.storeImage(image: imageData, completion: { [weak self] (result) in
-            switch result{
-            case .success(let url):
-                //Note - defer UI response, update user image url in auth and in firestore when save is pressed
-                self?.imageURL = url
-            case .failure(let error):
-                //MARK: TODO - defer image not save alert, try again later. maybe make VC "dirty" to allow user to move on in nav stack
-                print(error)
-            }
-        })
-        dismiss(animated: true, completion: nil)
-    }
+          guard let image = info[.editedImage] as? UIImage else {
+              //MARK: TODO - handle couldn't get image :(
+              return
+          }
+          self.image = image
+          
+          guard let imageData = image.jpegData(compressionQuality: 1) else {
+              //MARK: TODO - gracefully fail out without interrupting UX
+              return
+          }
+          
+          FirebaseStorageService.profileManager.storeImage(image: imageData, completion: { [weak self] (result) in
+              switch result{
+              case .success(let url):
+                  //Note - defer UI response, update user image url in auth and in firestore when save is pressed
+                  self?.imageURL = url
+              case .failure(let error):
+                  //MARK: TODO - defer image not save alert, try again later. maybe make VC "dirty" to allow user to move on in nav stack
+                  print(error)
+              }
+          })
+          dismiss(animated: true, completion: nil)
+      }
 }

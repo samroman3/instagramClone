@@ -31,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = LoginViewController()
         }
 
+
                window?.makeKeyAndVisible()
     }
 

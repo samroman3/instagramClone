@@ -18,7 +18,7 @@ class LoginViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont(name: "Trebuchet MS", size: 100)
-        let attributedTitle = NSMutableAttributedString(string: "notInstagram", attributes: [NSAttributedString.Key.font: UIFont(name: "Billabong", size: 80)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attributedTitle = NSMutableAttributedString(string: "notInstagram", attributes: [NSAttributedString.Key.font: UIFont(name: "Billabong", size: 80)!, NSAttributedString.Key.foregroundColor: UIColor.white])
         label.attributedText = attributedTitle
         label.backgroundColor = .clear
         label.textAlignment = .center
@@ -32,7 +32,7 @@ class LoginViewController: UIViewController {
         textField.textAlignment = .left
         textField.layer.cornerRadius = 15
         textField.backgroundColor = .init(white: 1.0, alpha: 0.2)
-        textField.textColor = .black
+        textField.textColor = .white
         textField.borderStyle = .roundedRect
         textField.addTarget(self, action: #selector(validateFields), for: .editingChanged)
         return textField
@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
         textField.isSecureTextEntry = true
         textField.layer.cornerRadius = 15
         textField.backgroundColor = .init(white: 1.0, alpha: 0.2)
-        textField.textColor = .black
+        textField.textColor = .white
         textField.borderStyle = .roundedRect
         textField.addTarget(self, action: #selector(validateFields), for: .editingChanged)
         return textField
@@ -101,7 +101,7 @@ class LoginViewController: UIViewController {
     
     
     override func viewDidLoad() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.init(white: 0.1, alpha: 1)
         setUpConstraints()
         super.viewDidLoad()
         
