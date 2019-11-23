@@ -1,4 +1,5 @@
 
+
 import Foundation
 import FirebaseFirestore
 
@@ -6,6 +7,17 @@ enum FireStoreCollections: String {
     case users
     case posts
     case comments
+}
+
+enum SortingCriteria: String {
+    case fromNewestToOldest = "dateCreated"
+    var shouldSortAscending: Bool {
+        switch self {
+        case .fromNewestToOldest:
+        return true
+        }
+        
+    }
 }
 
 class FirestoreService {
@@ -28,7 +40,6 @@ class FirestoreService {
     
     func updateCurrentUser(userName: String? = nil, photoURL: URL? = nil, completion: @escaping (Result<(), Error>) -> ()){
         guard let userId = FirebaseAuthService.manager.currentUser?.uid else {
-            //MARK: TODO - handle can't get current user
             return
         }
         var updateFields = [String:Any]()
@@ -40,7 +51,7 @@ class FirestoreService {
         if let photo = photoURL {
             updateFields["photoURL"] = photo.absoluteString
         }
-        
+        //PUT request
         db.collection(FireStoreCollections.users.rawValue).document(userId).updateData(updateFields) { (error) in
             if let error = error {
                 completion(.failure(error))
@@ -65,6 +76,15 @@ class FirestoreService {
             }
         }
     }
+    func updateAppUser(id: String,newDisplayName: String,completion: @escaping (Result<(),Error>) -> ()) {
+        db.collection(FireStoreCollections.users.rawValue).document(id).updateData(["userName": newDisplayName]) { (error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
     
     //MARK: Posts
     func createPost(post: Post, completion: @escaping (Result<(), Error>) -> ()) {
@@ -79,8 +99,9 @@ class FirestoreService {
         }
     }
     
-    func getAllPosts(completion: @escaping (Result<[Post], Error>) -> ()) {
-        db.collection(FireStoreCollections.posts.rawValue).getDocuments { (snapshot, error) in
+    func getAllPosts(sortingCriteria: SortingCriteria?, completion: @escaping (Result<[Post], Error>) -> ()) {
+        let completionHandler: FIRQuerySnapshotBlock = {
+            (snapshot, error) in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -92,6 +113,8 @@ class FirestoreService {
                 completion(.success(posts ?? []))
             }
         }
+        db.collection(FireStoreCollections.posts.rawValue).order(by: sortingCriteria?.rawValue ?? "dateCreated", descending: sortingCriteria?.shouldSortAscending ?? true).getDocuments(completion: completionHandler)
+            
     }
     
     func getPosts(forUserID: String, completion: @escaping (Result<[Post], Error>) -> ()) {
@@ -107,40 +130,21 @@ class FirestoreService {
                 completion(.success(posts ?? []))
             }
         }
-        
     }
-    
-    //MARK: Comments
-    
-    func createComment(comment: Comment, completion: @escaping (Result<(), Error>) -> ()) {
-        var fields = comment.fieldsDict
-        fields["dateCreated"] = Date()
-        db.collection(FireStoreCollections.comments.rawValue).addDocument(data: fields) { (error) in
+    func getUserNameFromPost(creatorID: String, completion: @escaping (Result<String,Error>) -> ()) {
+        db.collection(FireStoreCollections.users.rawValue).document(creatorID).getDocument { (snapshot, error) in
+            
             if let error = error {
                 completion(.failure(error))
-            } else {
-                completion(.success(()))
+            } else if let snapshot = snapshot,
+                let data = snapshot.data() {
+                let userID = snapshot.documentID
+                let user = AppUser(from: data, id: userID)
+                if let appUser = user {
+                    completion(.success(appUser.userName ?? ""))
+                }
             }
         }
-    }
-    
-    func getComments(forPostID: String, completion: @escaping (Result<[Comment], Error>) -> ()) {
-        db.collection(FireStoreCollections.comments.rawValue).whereField("postID", isEqualTo: forPostID).getDocuments { (snapshot, error) in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                let comments = snapshot?.documents.compactMap({ (snapshot) -> Comment? in
-                    let commentID = snapshot.documentID
-                    let comment = Comment(from: snapshot.data(), id: commentID)
-                    return comment
-                })
-                completion(.success(comments ?? []))
-            }
-        }
-    }
-    
-    func getComments(forUserID: String, completion: @escaping (Result<[Comment], Error>) -> ()) {
-        
     }
     
     private init () {}

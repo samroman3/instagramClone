@@ -33,6 +33,7 @@
 		3A3774E8238853B70034EA59 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774E7238853B70034EA59 /* UploadViewController.swift */; };
 		3A3774EB23886FDC0034EA59 /* Billabong.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A3774EA23886E8C0034EA59 /* Billabong.ttf */; };
 		3A3774ED238871D00034EA59 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774EC238871D00034EA59 /* ProfileEditViewController.swift */; };
+		3AF363052389BC70006717C0 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF363042389BC70006717C0 /* PostCell.swift */; };
 		E47ABBC3BE4215E27EE18ED2 /* Pods_instagramCloneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 387AE922004F608AE61B6ABA /* Pods_instagramCloneTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		3A3774E7238853B70034EA59 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		3A3774EA23886E8C0034EA59 /* Billabong.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Billabong.ttf; sourceTree = "<group>"; };
 		3A3774EC238871D00034EA59 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
+		3AF363042389BC70006717C0 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		3F99C333C61C307A66C98CD5 /* Pods_instagramClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_instagramClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		431CA726C9F2DE8F0562CD3C /* Pods-instagramClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instagramClone.release.xcconfig"; path = "Target Support Files/Pods-instagramClone/Pods-instagramClone.release.xcconfig"; sourceTree = "<group>"; };
 		46D7845BB4947603DA5F1414 /* Pods-instagramClone-instagramCloneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instagramClone-instagramCloneUITests.release.xcconfig"; path = "Target Support Files/Pods-instagramClone-instagramCloneUITests/Pods-instagramClone-instagramCloneUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				3A3774EC238871D00034EA59 /* ProfileEditViewController.swift */,
 				3A3774E52388531D0034EA59 /* FeedViewController.swift */,
 				3A3774E7238853B70034EA59 /* UploadViewController.swift */,
+				3AF363032389BC51006717C0 /* Views */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -265,6 +268,14 @@
 				3A3774EA23886E8C0034EA59 /* Billabong.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		3AF363032389BC51006717C0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3AF363042389BC70006717C0 /* PostCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		9E6ECE8761346E93B7A7B1B6 /* Pods */ = {
@@ -525,6 +536,7 @@
 				3A3774D023884F760034EA59 /* AppUser.swift in Sources */,
 				3A3774C723884E0D0034EA59 /* FirebaseAuthService.swift in Sources */,
 				3A3774C923884E6D0034EA59 /* FirestoreService.swift in Sources */,
+				3AF363052389BC70006717C0 /* PostCell.swift in Sources */,
 				3A3774E4238852FE0034EA59 /* ProfileViewController.swift in Sources */,
 				3A3774D223884F770034EA59 /* Comment.swift in Sources */,
 				3A3774DD238851690034EA59 /* String + Validations.swift in Sources */,

@@ -1,10 +1,11 @@
+
 import UIKit
 import Photos
 
 class ProfileEditViewController: UIViewController {
-    
+
     var settingFromLogin = false
-    
+
     //MARK: TODO - set up views using autolayout, not frames
     //MARK: TODO - edit other fields in this VC
     var image = UIImage() {
@@ -12,16 +13,16 @@ class ProfileEditViewController: UIViewController {
             self.imageView.image = image
         }
     }
-    
+
     var imageURL: URL? = nil
-    
+
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .clear
         imageView.image = UIImage(systemName: "photo")
         return imageView
     }()
-    
+
     lazy var addImageButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add Image", for: .normal)
@@ -31,7 +32,7 @@ class ProfileEditViewController: UIViewController {
         button.addTarget(self, action: #selector(addImagePressed), for: .touchUpInside)
         return button
     }()
-    
+
     lazy var userNameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter User Name"
@@ -44,7 +45,7 @@ class ProfileEditViewController: UIViewController {
         textField.autocorrectionType = .no
         return textField
     }()
-    
+
     lazy var saveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Save Profile", for: .normal)
@@ -55,21 +56,21 @@ class ProfileEditViewController: UIViewController {
         button.addTarget(self, action: #selector(savePressed), for: .touchUpInside)
         return button
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupViews()
         //MARK: TODO - load in user image and fields when coming from profile page
     }
-    
+
     @objc private func savePressed(){
         guard let userName = userNameTextField.text, let imageURL = imageURL else {
             //MARK: TODO - alert
             return
         }
-        
-        FirebaseAuthService.manager.updateUserFields(userName: userName, photoURL: imageURL) { (result) in
+
+        FirebaseAuthService.manager.updateUserFields(userName: userName, photoURL: imageURL.absoluteString) { (result) in
             switch result {
             case .success():
                 FirestoreService.manager.updateCurrentUser(userName: userName, photoURL: imageURL) { [weak self] (nextResult) in
@@ -78,7 +79,7 @@ class ProfileEditViewController: UIViewController {
                         self?.handleNavigationAwayFromVC()
                     case .failure(let error):
                         //MARK: TODO - handle
-                        
+
                         //Discussion - if can't update on user object in collection, our firestore object will not match what is in auth. should we:
                         // 1. Re-try the save?
                         // 2. Revert the changes on the auth user?
@@ -92,7 +93,7 @@ class ProfileEditViewController: UIViewController {
             }
         }
     }
-    
+
     @objc private func addImagePressed() {
         //MARK: TODO - action sheet with multiple media options
         switch PHPhotoLibrary.authorizationStatus() {
@@ -113,13 +114,13 @@ class ProfileEditViewController: UIViewController {
             presentPhotoPickerController()
         }
     }
-    
+
     private func showAlert(with title: String, and message: String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alertVC, animated: true, completion: nil)
     }
-    
+
     private func presentPhotoPickerController() {
         DispatchQueue.main.async{
             let imagePickerViewController = UIImagePickerController()
@@ -130,7 +131,7 @@ class ProfileEditViewController: UIViewController {
             self.present(imagePickerViewController, animated: true, completion: nil)
         }
     }
-    
+
     private func handleNavigationAwayFromVC() {
         if settingFromLogin {
             //MARK: TODO - refactor this logic into scene delegate
@@ -147,17 +148,17 @@ class ProfileEditViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
+
     private func setupViews() {
         setupImageView()
         setupUserNameTextField()
         setupAddImageButton()
         setupSaveButton()
     }
-    
+
     private func setupImageView() {
         view.addSubview(imageView)
-        
+
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
@@ -166,10 +167,10 @@ class ProfileEditViewController: UIViewController {
             imageView.widthAnchor.constraint(equalToConstant: 200)
         ])
     }
-    
+
     private func setupUserNameTextField() {
         view.addSubview(userNameTextField)
-        
+
         userNameTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             userNameTextField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 30),
@@ -178,10 +179,10 @@ class ProfileEditViewController: UIViewController {
             userNameTextField.widthAnchor.constraint(equalToConstant: view.bounds.width / 2)
         ])
     }
-    
+
     private func setupAddImageButton() {
         view.addSubview(addImageButton)
-        
+
         addImageButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addImageButton.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 50),
@@ -190,10 +191,10 @@ class ProfileEditViewController: UIViewController {
             addImageButton.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
     }
-    
+
     private func setupSaveButton() {
         view.addSubview(saveButton)
-        
+
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             saveButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -211,12 +212,12 @@ extension ProfileEditViewController: UIImagePickerControllerDelegate, UINavigati
             return
         }
         self.image = image
-        
+
         guard let imageData = image.jpegData(compressionQuality: 1) else {
             //MARK: TODO - gracefully fail out without interrupting UX
             return
         }
-        
+
         FirebaseStorageService.manager.storeImage(image: imageData, completion: { [weak self] (result) in
             switch result{
             case .success(let url):
