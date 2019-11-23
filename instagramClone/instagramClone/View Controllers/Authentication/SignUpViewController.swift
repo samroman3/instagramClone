@@ -281,16 +281,6 @@ class SignUpViewController: UIViewController {
                passwordIcon.widthAnchor.constraint(equalToConstant: 30)])
        }
        
-//       private func setupUserNameIcon(){
-//           view.addSubview(userNameIcon)
-//           userNameIcon.translatesAutoresizingMaskIntoConstraints = false
-//           NSLayoutConstraint.activate([
-//               userNameIcon.trailingAnchor.constraint(equalTo: userNameTextField.leadingAnchor, constant: -10),
-//               userNameIcon.centerYAnchor.constraint(equalTo: userNameTextField.centerYAnchor),
-//               userNameIcon.heightAnchor.constraint(equalToConstant: 30),
-//               userNameIcon.widthAnchor.constraint(equalToConstant: 30)])
-//       }
-    
     
     
 

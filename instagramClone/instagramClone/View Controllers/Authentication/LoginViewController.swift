@@ -168,11 +168,20 @@ class LoginViewController: UIViewController {
         //
         case .success:
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                let sceneDelegate = windowScene.delegate as? SceneDelegate
+                let sceneDelegate = windowScene.delegate as? SceneDelegate, let window = sceneDelegate.window
                 else { return }
             print("login successful")
-            sceneDelegate.window?.rootViewController = MainTabBarViewController()
-            
+            UIView.transition(with: window, duration: 0.3, options: .transitionFlipFromBottom, animations: {
+                              if FirebaseAuthService.manager.currentUser?.photoURL != nil {
+                                window.rootViewController = MainTabBarViewController()
+                              } else {
+                                  window.rootViewController = {
+                                      let profileSetupVC = ProfileEditViewController()
+                                      profileSetupVC.settingFromLogin = true
+                                      return profileSetupVC
+                                  }()
+                              }
+                          }, completion: nil)
         }
     }
     

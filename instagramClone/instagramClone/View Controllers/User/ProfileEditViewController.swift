@@ -17,8 +17,8 @@ class ProfileEditViewController: UIViewController {
     
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .black
-        imageView.image = UIImage(systemName: "person")
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(systemName: "photo")
         return imageView
     }()
     
@@ -26,9 +26,8 @@ class ProfileEditViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Add Image", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Verdana-Bold", size: 14)
-        button.backgroundColor = UIColor(red: 255/255, green: 67/255, blue: 0/255, alpha: 1)
-        button.layer.cornerRadius = 5
+         button.titleLabel?.font = button.titleLabel?.font.withSize(34)
+        button.backgroundColor = .magenta
         button.addTarget(self, action: #selector(addImagePressed), for: .touchUpInside)
         return button
     }()
@@ -36,9 +35,11 @@ class ProfileEditViewController: UIViewController {
     lazy var userNameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter User Name"
-        textField.font = UIFont(name: "Verdana", size: 14)
-        textField.backgroundColor = .white
-        textField.borderStyle = .bezel
+        textField.autocorrectionType = .no
+        textField.textAlignment = .left
+        textField.layer.cornerRadius = 15
+        textField.backgroundColor = .init(white: 1.0, alpha: 0.2)
+        textField.borderStyle = .roundedRect
         textField.layer.cornerRadius = 5
         textField.autocorrectionType = .no
         return textField
@@ -48,8 +49,8 @@ class ProfileEditViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Save Profile", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Verdana-Bold", size: 14)
-        button.backgroundColor = UIColor(red: 255/255, green: 67/255, blue: 0/255, alpha: 1)
+        button.titleLabel?.font = UIFont(name: "System", size: 14)
+        button.backgroundColor = .magenta
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(savePressed), for: .touchUpInside)
         return button
@@ -57,7 +58,7 @@ class ProfileEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .gray
+        self.view.backgroundColor = .white
         setupViews()
         //MARK: TODO - load in user image and fields when coming from profile page
     }
@@ -159,10 +160,10 @@ class ProfileEditViewController: UIViewController {
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
             imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: self.view.bounds.width / 2),
-            imageView.widthAnchor.constraint(equalToConstant: self.view.bounds.width / 2)
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+            imageView.heightAnchor.constraint(equalToConstant: 200),
+            imageView.widthAnchor.constraint(equalToConstant: 200)
         ])
     }
     
@@ -186,7 +187,7 @@ class ProfileEditViewController: UIViewController {
             addImageButton.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 50),
             addImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addImageButton.heightAnchor.constraint(equalToConstant: 50),
-            addImageButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 3)
+            addImageButton.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
     }
     
