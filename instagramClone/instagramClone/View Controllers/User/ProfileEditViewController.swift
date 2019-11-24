@@ -96,6 +96,7 @@ class ProfileEditViewController: UIViewController {
     @objc private func savePressed(){
         guard let userName = userNameTextField.text, let imageURL = imageURL else {
             //MARK: TODO - alert
+            showAlert(with: "Success", and: "Profile Updated")
             return
         }
     
@@ -181,7 +182,7 @@ class ProfileEditViewController: UIViewController {
                 window.rootViewController = MainTabBarViewController()
             }, completion: nil)
         } else {
-            self.navigationController?.popViewController(animated: true)
+            dismiss(animated: true, completion: nil)
         }
     }
     

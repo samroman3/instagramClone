@@ -12,12 +12,14 @@ class PostCell: UICollectionViewCell {
      
         override init(frame: CGRect) {
             super.init(frame: frame)
+            constrainImageView()
         }
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         lazy var postImage: UIImageView = {
             let image = UIImageView()
+            image.contentMode = .scaleToFill
             return image
         }()
         private func constrainImageView(){
