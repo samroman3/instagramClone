@@ -96,7 +96,7 @@ class ProfileEditViewController: UIViewController {
     @objc private func savePressed(){
         guard let userName = userNameTextField.text, let imageURL = imageURL else {
             //MARK: TODO - alert
-            showAlert(with: "Success", and: "Profile Updated")
+            showAlert(with: "Failure", and: "Profile Not Updated")
             return
         }
     
@@ -171,11 +171,10 @@ class ProfileEditViewController: UIViewController {
 
     private func handleNavigationAwayFromVC() {
         if settingFromLogin {
-            //MARK: TODO - refactor this logic into scene delegate
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                 let sceneDelegate = windowScene.delegate as? SceneDelegate, let window = sceneDelegate.window
                 else {
-                    //MARK: TODO - handle could not swap root view controller
+                    print("cant segue")
                     return
             }
             UIView.transition(with: window, duration: 0.3, options: .transitionFlipFromBottom, animations: {
