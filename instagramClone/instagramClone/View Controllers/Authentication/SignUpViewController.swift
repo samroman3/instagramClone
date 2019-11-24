@@ -42,6 +42,7 @@ class SignUpViewController: UIViewController {
         textField.textColor = .white
         textField.borderStyle = .roundedRect
         textField.addTarget(self, action: #selector(validateFields), for: .editingChanged)
+        textField.delegate = self
         return textField
     }()
     
@@ -56,6 +57,8 @@ class SignUpViewController: UIViewController {
         textField.textColor = .white
         textField.borderStyle = .roundedRect
         textField.addTarget(self, action: #selector(validateFields), for: .editingChanged)
+        textField.delegate = self
+
         return textField
     }()
     
@@ -284,4 +287,10 @@ class SignUpViewController: UIViewController {
     
     
 
+}
+
+extension SignUpViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
 }

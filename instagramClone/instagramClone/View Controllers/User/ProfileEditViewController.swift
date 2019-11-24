@@ -49,6 +49,7 @@ class ProfileEditViewController: UIViewController {
         textField.backgroundColor = .init(white: 1.0, alpha: 0.2)
         textField.textColor = .white
         textField.borderStyle = .roundedRect
+        textField.delegate = self
         return textField
     }()
 
@@ -284,4 +285,10 @@ extension ProfileEditViewController: UIImagePickerControllerDelegate, UINavigati
           })
           dismiss(animated: true, completion: nil)
       }
+}
+
+extension ProfileEditViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
 }
