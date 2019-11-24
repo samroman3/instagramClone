@@ -184,7 +184,7 @@ extension UploadViewController: UIImagePickerControllerDelegate, UINavigationCon
         }
         self.image = image
         
-        guard let imageData = image.jpegData(compressionQuality: 1) else {
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else {
             //MARK: TODO - gracefully fail out without interrupting UX
             showAlert(with: "Error", and: "could not compress image")
             return

@@ -75,6 +75,7 @@ class FeedViewController: UIViewController {
             }
         }
 
+
         //MARK: - LifeCycle
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -110,12 +111,20 @@ class FeedViewController: UIViewController {
                             cell.feedImage.image = firebaseImage
                         }
                     }
-                    FirestoreService.manager.getUserNameFromPost(creatorID: post.creatorID) { (result) in
+                    FirestoreService.manager.getUserFromPost(creatorID: post.creatorID) { (result) in
                         switch result {
                         case .failure(let error):
                             print(error)
-                        case .success(let displayName):
-                            cell.nameLabel.text = displayName
+                        case .success(let user):
+                            cell.nameLabel.text = user.userName
+                            FirebaseStorageService.profileManager.getUserImage(photoUrl: URL(string: user.photoURL!)!) { (result) in
+                                switch result {
+                                case .failure(let error):
+                                    print(error)
+                                case .success(let image):
+                                    cell.profileImage.image = image
+                                }
+                            }
                         }
                     }
                 }
