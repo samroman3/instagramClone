@@ -51,12 +51,14 @@ class ProfileViewController: UIViewController {
     
     
     
-    var image = UIImage() {
-        didSet {
-            self.profileImage.image = image
-        }
-    }
+//    var image = UIImage() {
+//        didSet {
+//            self.profileImage.image = image
+//        }
+//    }
+//    
     var imageURL: String? = nil
+    
     var postCount = 0 {
         didSet {
             totalPost.text = "\(postCount) \n Posts"

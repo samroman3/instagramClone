@@ -11,7 +11,7 @@
 		2047C713D4B3388581C96938 /* Pods_instagramClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F99C333C61C307A66C98CD5 /* Pods_instagramClone.framework */; };
 		3A37748D2385EB260034EA59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A37748C2385EB260034EA59 /* AppDelegate.swift */; };
 		3A37748F2385EB260034EA59 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A37748E2385EB260034EA59 /* SceneDelegate.swift */; };
-		3A3774912385EB260034EA59 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774902385EB260034EA59 /* ViewController.swift */; };
+		3A3774912385EB260034EA59 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3774902385EB260034EA59 /* PhotoDetailViewController.swift */; };
 		3A3774942385EB260034EA59 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A3774922385EB260034EA59 /* Main.storyboard */; };
 		3A3774962385EB290034EA59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A3774952385EB290034EA59 /* Assets.xcassets */; };
 		3A3774992385EB290034EA59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A3774972385EB290034EA59 /* LaunchScreen.storyboard */; };
@@ -64,7 +64,7 @@
 		3A3774892385EB260034EA59 /* instagramClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = instagramClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A37748C2385EB260034EA59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A37748E2385EB260034EA59 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3A3774902385EB260034EA59 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3A3774902385EB260034EA59 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		3A3774932385EB260034EA59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3A3774952385EB290034EA59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A3774982385EB290034EA59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -167,7 +167,6 @@
 				3A3774DF238851A70034EA59 /* Utilities */,
 				3A37748C2385EB260034EA59 /* AppDelegate.swift */,
 				3A37748E2385EB260034EA59 /* SceneDelegate.swift */,
-				3A3774902385EB260034EA59 /* ViewController.swift */,
 				3A3774922385EB260034EA59 /* Main.storyboard */,
 				3A3774952385EB290034EA59 /* Assets.xcassets */,
 				3A3774972385EB290034EA59 /* LaunchScreen.storyboard */,
@@ -258,6 +257,7 @@
 				3A3774E3238852FE0034EA59 /* ProfileViewController.swift */,
 				3A3774EC238871D00034EA59 /* ProfileEditViewController.swift */,
 				3A3774E52388531D0034EA59 /* FeedViewController.swift */,
+				3A3774902385EB260034EA59 /* PhotoDetailViewController.swift */,
 				3A3774E7238853B70034EA59 /* UploadViewController.swift */,
 				3AF363032389BC51006717C0 /* Views */,
 			);
@@ -544,7 +544,7 @@
 				3A3774D223884F770034EA59 /* Comment.swift in Sources */,
 				3A3774DD238851690034EA59 /* String + Validations.swift in Sources */,
 				3A3774E62388531D0034EA59 /* FeedViewController.swift in Sources */,
-				3A3774912385EB260034EA59 /* ViewController.swift in Sources */,
+				3A3774912385EB260034EA59 /* PhotoDetailViewController.swift in Sources */,
 				3A3774E8238853B70034EA59 /* UploadViewController.swift in Sources */,
 				3AF36307238A228B006717C0 /* FeedCell.swift in Sources */,
 				3A3774E1238852110034EA59 /* MainTabBarViewController.swift in Sources */,

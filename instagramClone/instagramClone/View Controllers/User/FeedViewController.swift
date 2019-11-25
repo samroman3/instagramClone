@@ -142,10 +142,10 @@ class FeedViewController: UIViewController {
         }
         
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//            let selectedPost = posts[indexPath.row]
-//            let detailVC = ImageDetailVC()
-//            detailVC.post = selectedPost
-//            present(detailVC, animated: true, completion: nil)
+            let selectedPost = posts[indexPath.row]
+            let detailVC = PhotoDetailViewController()
+            detailVC.post = selectedPost
+            present(detailVC, animated: true, completion: nil)
         }
         
     }
