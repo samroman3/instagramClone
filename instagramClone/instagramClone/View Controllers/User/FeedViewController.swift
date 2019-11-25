@@ -69,11 +69,15 @@ class FeedViewController: UIViewController {
                     print(error)
                 case .success(let postsFromFirebase):
                     DispatchQueue.main.async {
+                        if self.posts.count != postsFromFirebase.count {
                         self.posts = postsFromFirebase
+                        } else { return }
                     }
                 }
             }
         }
+    
+    
 
 
         //MARK: - LifeCycle
