@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ProfileViewController: UIViewController {
     
@@ -49,14 +50,7 @@ class ProfileViewController: UIViewController {
     var user: AppUser!
     var isCurrentUser = false
     
-    
-    
-//    var image = UIImage() {
-//        didSet {
-//            self.profileImage.image = image
-//        }
-//    }
-//    
+
     var imageURL: String? = nil
     
     var postCount = 0 {
@@ -186,7 +180,40 @@ class ProfileViewController: UIViewController {
         present(editVC, animated: true, completion: nil)
     }
     
+    lazy var logOutButton: UIButton = {
+    let button = UIButton()
+        button.titleLabel?.text = "Log Out"
+        button.backgroundColor = .clear
+        button.titleLabel?.textColor = .white
+        button.setTitle("Log Out", for: .normal)
+        button.showsTouchWhenHighlighted = true
+        button.addTarget(self, action: #selector(logOut), for: .touchUpInside)
+    return button
+    }()
     
+    
+    @objc func logOut (){
+        let alert = UIAlertController(title: "Log Out?", message: nil, preferredStyle: .actionSheet)
+        let action = UIAlertAction.init(title: "Yup!", style: .destructive, handler: .some({ (action) in
+             DispatchQueue.main.async {
+                       FirebaseAuthService.manager.logOut { (result) in
+                       }
+                       guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let sceneDelegate = windowScene.delegate as? SceneDelegate, let window = sceneDelegate.window
+                           else {
+                               return
+                       }
+                       UIView.transition(with: window, duration: 0.3, options: .transitionFlipFromBottom, animations: {
+                           window.rootViewController = LoginViewController()
+                       }, completion: nil)
+                   }
+        }))
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(action)
+        alert.addAction(cancel)
+        present(alert, animated:true)
+    
+    }
     
     //MARK: Constraint Methods
     
@@ -198,6 +225,7 @@ class ProfileViewController: UIViewController {
         constrainCollectionView()
         setUserName()
         setProfileImage()
+        constrainLogOutButton()
     }
     
     
@@ -224,7 +252,7 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 3),
             stackView.heightAnchor.constraint(equalToConstant: 80),
-            stackView.topAnchor.constraint(equalTo: profileImage.topAnchor, constant: 10),
+            stackView.topAnchor.constraint(equalTo: profileImage.topAnchor, constant: 30),
             stackView.widthAnchor.constraint(equalToConstant: 245)
         ])
         
@@ -266,6 +294,19 @@ class ProfileViewController: UIViewController {
         ])
     }
     
+    private func constrainLogOutButton(){
+        view.addSubview(logOutButton)
+        logOutButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            logOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            logOutButton.heightAnchor.constraint(equalToConstant: 30),
+            logOutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
+
+        ])
+    }
+    
+    
+    
     
 }
 
@@ -305,6 +346,11 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedPost = posts[indexPath.row]
+        let detailVC = PhotoDetailViewController()
+        detailVC.post = selectedPost
+        present(detailVC, animated: true, completion: nil)
+    }
     
 }
