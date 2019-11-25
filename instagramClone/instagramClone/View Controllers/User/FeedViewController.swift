@@ -145,6 +145,7 @@ class FeedViewController: UIViewController {
             let selectedPost = posts[indexPath.row]
             let detailVC = PhotoDetailViewController()
             detailVC.post = selectedPost
+            
             present(detailVC, animated: true, completion: nil)
         }
         
